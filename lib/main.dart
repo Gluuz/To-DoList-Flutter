@@ -17,7 +17,19 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List _toDoList = ["Bruno", "Teste"];
+  final _toDoController = TextEditingController();
+
+  void _addToDo() {
+    setState(() {
+      Map<String, dynamic> newToDo = Map();
+      newToDo["title"] = _toDoController.text;
+      _toDoController.text = "";
+      newToDo["ok"] = false;
+      _toDoList.add(newToDo);
+    });
+  }
+
+  List _toDoList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +47,14 @@ class _HomeState extends State<Home> {
               children: <Widget>[
                 Expanded(
                   child: TextField(
+                    controller: _toDoController,
                     decoration: InputDecoration(
                         labelText: "Nova Tarefa",
                         labelStyle: TextStyle(color: Colors.blueAccent)),
                   ),
                 ),
                 RaisedButton(
-                  onPressed: () {},
+                  onPressed: _addToDo,
                   color: Colors.blueAccent,
                   child: Text("Add"),
                   textColor: Colors.white,
@@ -53,7 +66,11 @@ class _HomeState extends State<Home> {
               child: ListView.builder(
             itemBuilder: (context, index) {
               return CheckboxListTile(
-                onChanged: (teste) async {},
+                onChanged: (c) {
+                  setState(() {
+                    _toDoList[index]["ok"] = c;
+                  });
+                },
                 title: Text(_toDoList[index]["title"]),
                 value: _toDoList[index]["ok"],
                 secondary: CircleAvatar(
