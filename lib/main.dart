@@ -51,7 +51,9 @@ class _HomeState extends State<Home> {
           ),
           Expanded(
               child: ListView.builder(
-            itemBuilder: itemBuilder,
+            itemBuilder: (context, index) {
+              return ListTile();
+            },
             padding: EdgeInsets.only(top: 10.0),
             itemCount: _toDoList.length,
           ))
